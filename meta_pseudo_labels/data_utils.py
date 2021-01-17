@@ -40,7 +40,7 @@ from meta_pseudo_labels import augment
 from meta_pseudo_labels import common_utils
 from tensorflow.python.tpu import tpu_feed
 
-CIFAR_PATH = ''
+CIFAR_PATH = '/content/cifar-10-batches-bin'
 CIFAR_MEAN = np.array([0.491400, 0.482158, 0.4465309], np.float32) * 255.
 CIFAR_STDDEV = np.array([0.247032, 0.243485, 0.26159], np.float32) * 255.
 
@@ -488,6 +488,7 @@ def cifar10_train(params, batch_size=None):
   shuffle_size = batch_size * 16
 
   filenames = [os.path.join(CIFAR_PATH, 'train.bin')]
+  filenames = [os.path.join(CIFAR_PATH, f'data_batch_{i}') for i in range(6)]
   record_bytes = 1 + (3 * 32 * 32)
   dataset = tf.data.FixedLengthRecordDataset(filenames, record_bytes)
   dataset = dataset.map(
@@ -506,6 +507,7 @@ def cifar10_4000(params, batch_size=None):
   shuffle_size = batch_size * 16
 
   filenames = [os.path.join(CIFAR_PATH, 'train.bin')]
+  filenames = [os.path.join(CIFAR_PATH, f'data_batch_{i}') for i in range(6)]
   record_bytes = 1 + (3 * 32 * 32)
   dataset = tf.data.FixedLengthRecordDataset(filenames, record_bytes)
   dataset = dataset.take(4000).repeat().shuffle(shuffle_size)
@@ -596,7 +598,7 @@ def cifar10_eval(params, batch_size=None, eval_mode=None,
   if eval_mode == 'valid':
     filenames = [os.path.join(CIFAR_PATH, 'val.bin')]
   elif eval_mode == 'test':
-    filenames = [os.path.join(CIFAR_PATH, 'test_batch.bin')]
+    filenames = [os.path.join(CIFAR_PATH, 'test_batch')]
   else:
     raise ValueError(f'Unknown eval_mode {eval_mode}')
 

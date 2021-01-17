@@ -40,7 +40,7 @@ from absl import flags
 from absl import logging
 import numpy as np
 import tensorflow.compat.v1 as tf
-
+sys.path.append('..')
 from meta_pseudo_labels import common_utils
 from meta_pseudo_labels import data_utils
 from meta_pseudo_labels import flag_utils
